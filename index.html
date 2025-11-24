@@ -42,7 +42,7 @@
       const cols = l.split(",")
       let obj = {}
       headers.forEach((h,i)=> obj[h.trim()] = cols[i]?.trim() )
-      obj.price = parseFloat(obj.price||"consultar")
+      obj.price = obj.price ? parseFloat(obj.price) : null;
       return obj
     })
   }
@@ -60,13 +60,15 @@
       card.className = "card"
       card.dataset.name = p.name
       card.dataset.price = p.price
+      const displayPrice = p.price !== null ? `$${p.price.toFixed(2)}` : "Consultar";
+
       card.innerHTML = `
         <img src="static/images/${p.id}.jpeg" alt="${p.name}">
         <div class="meta">
           <div class="title">${p.name}</div>
           <div style="font-size:13px; color:var(--muted)">${p.category}</div>
           <div style="font-size:13px; color:#444">${p.description}</div>
-          <div class="price">$${p.price.toFixed(2)}</div>
+          <div class="price">${displayPrice}</div>
         </div>`
       card.addEventListener("click", () => openOverlay(p));
       container.appendChild(card)
@@ -175,7 +177,7 @@ async function openOverlay(product) {
   const token = ++overlayLoadToken;
   document.getElementById('overlayName').textContent = product.name || '';
   document.getElementById('overlayDescription').textContent = product.description || '';
-  document.getElementById('overlayPrice').textContent = product.price ? ('Precio: $' + product.price) : '';
+  document.getElementById('overlayPrice').textContent = product.price ? ('Precio: $' + product.price) : 'Consultar';
   document.getElementById('productOverlay').style.display = 'flex';
   await loadProductImages(product.image, token);
 }
