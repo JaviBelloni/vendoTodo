@@ -42,7 +42,7 @@
       const cols = l.split(",")
       let obj = {}
       headers.forEach((h,i)=> obj[h.trim()] = cols[i]?.trim() )
-      obj.price = parseFloat(obj.price||0)
+      obj.price = parseFloat(obj.price||"consultar")
       return obj
     })
   }
@@ -61,7 +61,7 @@
       card.dataset.name = p.name
       card.dataset.price = p.price
       card.innerHTML = `
-        <img src="static/images/${p.id}.JPEG" alt="${p.name}">
+        <img src="static/images/${p.id}.jpeg" alt="${p.name}">
         <div class="meta">
           <div class="title">${p.name}</div>
           <div style="font-size:13px; color:var(--muted)">${p.category}</div>
