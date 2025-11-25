@@ -169,10 +169,10 @@ async function loadProductImages(baseImage, token) {
   container.innerHTML = '<div class="loading">Cargando imágenes...</div>';
   if (!baseImage) { container.innerHTML = '<div class="empty">Sin imagen</div>'; return; }
 
-  const m = baseImage.match(/^(.*?)(-\\d+)?(\\.[^.]+)$/);
-  if (!m) { container.innerHTML = '<div class="empty">Formato inválido</div>'; return; }
-  const baseName = m[1];
-  const ext = m[3];
+  // Si no cumple patrón, usar imagen base directamente
+  const m = baseImage.match(/^(.*?)(-\d+)?(\.[^.]+)$/);
+  const baseName = m ? m[1] : baseImage.replace(/\.[^.]+$/, '');
+  const ext = m ? m[3] : '.jpeg';
 
   const imagesFound = [];
   const basePath = resolveImagePath(baseImage);
@@ -196,6 +196,7 @@ async function loadProductImages(baseImage, token) {
   imagesFound.forEach((src, idx) => {
     const img = document.createElement('img');
     img.src = src;
+    img.loading = "lazy";
     if (idx === 0) img.classList.add('active');
     container.appendChild(img);
   });
@@ -214,7 +215,7 @@ async function openOverlay(product) {
   const overlayPrice = (product.price && !isNaN(product.price)) ? `$${product.price}` : 'Consultar';
   document.getElementById('overlayPrice').textContent = 'Precio: ' + overlayPrice;
   document.getElementById('productOverlay').style.display = 'flex';
-  await loadProductImages(product.image, token);
+  await loadProductImages(product.image || `${product.id}.jpeg`, token);
 }
 
 // Cierra overlay
