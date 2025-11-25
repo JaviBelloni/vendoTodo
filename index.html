@@ -68,7 +68,7 @@
           <div class="title">${p.name}</div>
           <div style="font-size:13px; color:var(--muted)">${p.category}</div>
           <div style="font-size:13px; color:#444">${p.description}</div>
-          <div style="font-size:13px; color:#444">${p.size}</div>
+          <div style="font-size:13px; color:#444">Dimenciones: ${p.size}</div>
           <div class="price">Precio: ${displayPrice}</div>
         </div>`
       card.addEventListener("click", () => openOverlay(p));
@@ -179,7 +179,7 @@ async function openOverlay(product) {
   const token = ++overlayLoadToken;
   document.getElementById('overlayName').textContent = product.name || '';
   document.getElementById('overlayDescription').textContent = product.description || '';
-  document.getElementById('overlaySize').textContent = product.size || '';
+  document.getElementById('overlaySize').textContent = 'Dimenciones: ' + product.size || '';
   
   const overlayPrice = (product.price && !isNaN(product.price))
     ? `$${product.price}`
@@ -213,7 +213,8 @@ document.addEventListener('click', function(ev) {
     const name = card.dataset.name || (card.querySelector('.title') && card.querySelector('.title').textContent.trim()) || '';
     const descNode = card.querySelector('.meta > div:nth-child(3)');
     const description = descNode ? descNode.textContent.trim() : (card.dataset.description || '');
-    const size = descNode ? descNode.textContent.trim() : (card.dataset.size || '');
+    const descSize = card.querySelector('.meta > div:nth-child(4)');
+    const size = descSize ? descSize.textContent.trim() : (card.dataset.size || '');
     const price = card.dataset.price || (card.querySelector('.price') && card.querySelector('.price').textContent.replace('$','').trim()) || '';
     openOverlay({ image: imageSrc, name: name, description: description, size: size, price: price });
     return;
