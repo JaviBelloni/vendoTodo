@@ -226,7 +226,7 @@ async function openOverlay(product) {
   document.getElementById('overlayDescription').textContent = product.description || '';
   document.getElementById('overlaySize').textContent = 'Dimensiones: ' + (product.size || '');
   
-  const overlayPrice = (product.price && !isNaN(product.price)) ? `$${formatter.format(product.price)}` : 'Consultar';
+  const overlayPrice = (product.price && !isNaN(product.price)) ? (product.price && !isNaN(product.price) && product.price != -1) ? `$${formatter.format(product.price)}` : 'Reservado' : 'Consultar';
   document.getElementById('overlayPrice').textContent = 'Precio: ' + overlayPrice;
   document.getElementById('productOverlay').style.display = 'flex';
   await loadProductImages(`${product.id}.jpeg`, token);
